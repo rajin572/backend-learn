@@ -25,5 +25,5 @@ const teacherSchema = new Schema<Teacher>({
   isActive: { type: String, enum: ['active', 'inactive'], required: true },
 });
 
-const teacherModal = model<Teacher>('Teacher', teacherSchema);
-export default teacherModal;
+const TeacherModal = model<Teacher>('Teacher', teacherSchema);
+export default TeacherModal;

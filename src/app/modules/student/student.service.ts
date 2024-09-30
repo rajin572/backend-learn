@@ -24,7 +24,7 @@ const updateStudentIntoDB = async (student: Student) => {
   const result = await StudentModel.findOneAndUpdate(
     { id: student.id },
     student,
-    { new: true },
+    { upsert: true },
   );
   return result;
 };

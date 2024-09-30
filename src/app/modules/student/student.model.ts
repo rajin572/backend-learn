@@ -3,7 +3,7 @@ import { FullName, Guardian, Student } from './student.interface';
 
 const fullNameSchema = new Schema<FullName>({
   firstName: { type: String, required: true },
-  middleName: { type: String, required: true },
+  middleName: { type: String },
   lastName: { type: String, required: true },
 });
 const guardianSchema = new Schema<Guardian>({

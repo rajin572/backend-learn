@@ -7,7 +7,7 @@ export type Guardian = {
 
 export type FullName = {
   firstName: string;
-  middleName: string;
+  middleName?: string;
   lastName: string;
 };
 
