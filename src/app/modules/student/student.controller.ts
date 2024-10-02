@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import { StudentService } from './student.service';
+import { studentSchema } from './student.validation';
 
 //* Get Student
 const getStudent = async (req: Request, res: Response) => {
@@ -44,8 +45,11 @@ const createStudent = async (req: Request, res: Response) => {
     //* Catch the user request
     const { student } = req.body;
 
+    //* Validation
+    const validationResult = studentSchema.parse(student);
+
     //* Call Service Function to toi send data to database and return response
-    const result = await StudentService.createStudentIntoDB(student);
+    const result = await StudentService.createStudentIntoDB(validationResult);
     //* Send Response to the user
     res.status(200).json({
       success: true,
@@ -65,6 +69,7 @@ const updateStudent = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
     const { student } = req.body;
+    // const validationResult = updateStudentSchema.parse(student);
     const result = await StudentService.updateStudentIntoDB(id, student);
     res.status(200).json({
       success: true,

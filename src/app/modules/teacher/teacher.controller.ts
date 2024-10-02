@@ -56,8 +56,48 @@ const getSingleTeacher = async (req: Request, res: Response) => {
   }
 };
 
+const updateTeacher = async (req: Request, res: Response) => {
+  const { id } = req.params;
+  const { teacher } = req.body;
+
+  try {
+    const result = await TeacherService.updateTeacherIntoDB(id, teacher);
+    res.status(200).json({
+      success: true,
+      message: 'Successfully Update The Teacher',
+      data: result,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: 'Failed To Update The Teacher',
+      error: error instanceof Error ? error.message : error,
+    });
+  }
+};
+
+const deleteTeacher = async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+    const result = await TeacherService.deleteTeacherFromDB(id);
+    res.status(200).json({
+      success: true,
+      message: 'Successfully Delete The Teacher',
+      data: result,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: 'Failed To Delete The Teacher',
+      error: error instanceof Error ? error.message : error,
+    });
+  }
+};
+
 export const TeacherController = {
   createTeacher,
   getTeacher,
   getSingleTeacher,
+  updateTeacher,
+  deleteTeacher,
 };

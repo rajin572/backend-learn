@@ -18,12 +18,35 @@ const getTeacherFromDB = async () => {
 
 const getSingleTeacherFromDB = async (id: string) => {
   const result = await TeacherModal.findOne({ id });
-
   return result;
+};
+
+const updateTeacherIntoDB = async (id: string, teacher: Teacher) => {
+  const isExist = await TeacherModal.findOne({ id });
+  if (!isExist) {
+    throw new Error('User not found');
+  } else {
+    const result = await TeacherModal.findOneAndUpdate({ id }, teacher, {
+      new: true,
+    });
+    return result;
+  }
+};
+
+const deleteTeacherFromDB = async (id: string) => {
+  const isExist = await TeacherModal.findOne({ id });
+  if (!isExist) {
+    throw new Error('User not found');
+  } else {
+    const result = await TeacherModal.deleteOne({ id });
+    return result;
+  }
 };
 
 export const TeacherService = {
   createTeacherIntoDB,
   getTeacherFromDB,
   getSingleTeacherFromDB,
+  updateTeacherIntoDB,
+  deleteTeacherFromDB,
 };
