@@ -10,30 +10,47 @@ const getStudentFromDB = async () => {
 //* Get Single Student From Database
 const getSingleStudentFromDB = async (id: string) => {
   const result = await StudentModel.findOne({ id });
-  return result;
+  if (!result) {
+    throw new Error('User not found');
+  } else {
+    return result;
+  }
 };
 
 //* Create Student Into Database
 const createStudentIntoDB = async (student: Student) => {
-  const result = await StudentModel.create(student);
-  return result;
+  const isExist = await StudentModel.findOne({ id: student.id });
+  if (isExist) {
+    throw new Error('User Allready Exist');
+  } else {
+    const result = await StudentModel.create(student);
+    return result;
+  }
 };
 
 // //* Update Student Into Database
-const updateStudentIntoDB = async (student: Student) => {
-  const result = await StudentModel.findOneAndUpdate(
-    { id: student.id },
-    student,
-    { upsert: true },
-  );
-  return result;
+const updateStudentIntoDB = async (id: string, student: Student) => {
+  const isExist = await StudentModel.findOne({ id });
+  if (!isExist) {
+    throw new Error('User not found');
+  } else {
+    const result = await StudentModel.findOneAndUpdate({ id }, student, {
+      new: true,
+    });
+    return result;
+  }
 };
 
 //* Delete Student From Database
 
 const deleteStudentFromDB = async (id: string) => {
-  const result = await StudentModel.deleteOne({ id });
-  return result;
+  const isExist = await StudentModel.findOne({ id });
+  if (!isExist) {
+    throw new Error('User not found');
+  } else {
+    const result = await StudentModel.deleteOne({ id });
+    return result;
+  }
 };
 
 export const StudentService = {

@@ -3,23 +3,39 @@ import { StudentService } from './student.service';
 
 //* Get Student
 const getStudent = async (req: Request, res: Response) => {
-  const result = await StudentService.getStudentFromDB();
-  res.status(200).json({
-    success: true,
-    message: 'Successfully Get The Student',
-    data: result,
-  });
+  try {
+    const result = await StudentService.getStudentFromDB();
+    res.status(200).json({
+      success: true,
+      message: 'Successfully Get The Student',
+      data: result,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: 'Failed To Get The Student',
+      error: error instanceof Error ? error.message : error,
+    });
+  }
 };
 
 //* Get Single Student By Id
 const getStudentById = async (req: Request, res: Response) => {
-  const { id } = req.params;
-  const result = await StudentService.getSingleStudentFromDB(id);
-  res.status(200).json({
-    success: true,
-    message: 'Successfully Get The Student',
-    data: result,
-  });
+  try {
+    const { id } = req.params;
+    const result = await StudentService.getSingleStudentFromDB(id);
+    res.status(200).json({
+      success: true,
+      message: 'Successfully Get The Student',
+      data: result,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: 'Failed To Get The Student',
+      error: error instanceof Error ? error.message : error,
+    });
+  }
 };
 
 // * Create Student
@@ -40,15 +56,16 @@ const createStudent = async (req: Request, res: Response) => {
     res.status(500).json({
       success: false,
       message: 'Failed To Create The Student',
-      error: error,
+      error: error instanceof Error ? error.message : error,
     });
   }
 };
 
 const updateStudent = async (req: Request, res: Response) => {
   try {
+    const { id } = req.params;
     const { student } = req.body;
-    const result = await StudentService.updateStudentIntoDB(student);
+    const result = await StudentService.updateStudentIntoDB(id, student);
     res.status(200).json({
       success: true,
       message: 'Successfully Update The Student',
@@ -58,7 +75,7 @@ const updateStudent = async (req: Request, res: Response) => {
     res.status(500).json({
       success: false,
       message: 'Failed To Update The Student',
-      error: error,
+      error: error instanceof Error ? error.message : error,
     });
   }
 };
@@ -77,7 +94,7 @@ const deleteStudent = async (req: Request, res: Response) => {
     res.status(500).json({
       success: false,
       message: 'Failed To Delete The Student',
-      error: error,
+      error: error instanceof Error ? error.message : error,
     });
   }
 };
