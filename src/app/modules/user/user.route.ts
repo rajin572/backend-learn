@@ -5,6 +5,6 @@ const route = express.Router();
 
 route.post('/createUser', UserController.createUser);
 route.get('/', UserController.getUser);
-route.get('/:id', UserController.getSingleUser);
+route.get('/:id', UserController.getUserById);
 
 export const UserRoute = route;

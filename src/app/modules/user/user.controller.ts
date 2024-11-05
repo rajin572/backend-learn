@@ -1,17 +1,17 @@
 import { Request, Response } from 'express';
 import { UserService } from './user.service';
-import { userSchema } from './user.validation';
+import { UserValidationSchema } from './user.validation';
 
 const createUser = async (req: Request, res: Response) => {
-  const data = req.body;
-  try {
-    const validateData = userSchema.parse(data);
-    const result = await UserService.createUserIntoDB(validateData);
+  const user = req.body;
 
+  try {
+    const validateUser = UserValidationSchema.parse(user);
+    const data = await UserService.createUserFromDB(validateUser);
     res.status(200).json({
       success: true,
       message: 'Successfully Create The User',
-      data: result,
+      data: data,
     });
   } catch (error) {
     res.status(500).json({
@@ -21,13 +21,14 @@ const createUser = async (req: Request, res: Response) => {
     });
   }
 };
+
 const getUser = async (req: Request, res: Response) => {
   try {
-    const result = await UserService.getUserFromDB();
+    const data = await UserService.getUserFromDB();
     res.status(200).json({
       success: true,
       message: 'Successfully Get The User',
-      data: result,
+      data: data,
     });
   } catch (error) {
     res.status(500).json({
@@ -37,15 +38,14 @@ const getUser = async (req: Request, res: Response) => {
     });
   }
 };
-
-const getSingleUser = async (req: Request, res: Response) => {
+const getUserById = async (req: Request, res: Response) => {
   const { id } = req.params;
   try {
-    const result = await UserService.getSingleUserFromDB(id);
+    const data = await UserService.getUserByIdFromDB(id);
     res.status(200).json({
       success: true,
       message: 'Successfully Get The User',
-      data: result,
+      data: data,
     });
   } catch (error) {
     res.status(500).json({
@@ -56,4 +56,8 @@ const getSingleUser = async (req: Request, res: Response) => {
   }
 };
 
-export const UserController = { createUser, getUser, getSingleUser };
+export const UserController = {
+  createUser,
+  getUser,
+  getUserById,
+};
