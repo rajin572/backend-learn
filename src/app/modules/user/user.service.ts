@@ -2,7 +2,14 @@ import { TUser } from './user.interface';
 import UserModal from './user.modal';
 
 const createUserFromDB = async (user: TUser) => {
-  const result = await UserModal.create(user);
+  const userdata = new UserModal(user);
+  if (await userdata.isUserExist(user.id)) {
+    throw new Error('User Allready Exist');
+  }
+  const result = await userdata.save();
+
+  // const result = await UserModal.create(user);
+
   return result;
 };
 const getUserFromDB = async () => {
